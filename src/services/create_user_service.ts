@@ -21,16 +21,26 @@ export class CreateUserService {
 
     const passwordHash = await hash(request.password, 8)
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         name: request.name,
         email: request.email,
         password: passwordHash
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true
       }
     })
 
     return {
-      statusCode: 201
+      statusCode: 201,
+      body: {
+        user
+      }
     }
   }
 }
