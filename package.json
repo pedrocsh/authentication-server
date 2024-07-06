@@ -5,6 +5,7 @@
   "author": "Pedro Cardoso <peedro.shell@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@prisma/client": "5.16.1",
     "express": "^4.19.2"
   },
   "devDependencies": {
