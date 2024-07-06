@@ -19,8 +19,22 @@ export class CreateUserService {
       }
     }
 
-    const passwordHash = await hash(request.password, 8)
+    const userAlreadyExists = await prisma.user.findFirst({
+      where: {
+        email: request.email
+      }
+    })
 
+    if (userAlreadyExists) {
+      return {
+        statusCode: 400,
+        body: {
+          message: 'User already exists'
+        }
+      }
+    }
+
+    const passwordHash = await hash(request.password, 8)
     const user = await prisma.user.create({
       data: {
         name: request.name,
