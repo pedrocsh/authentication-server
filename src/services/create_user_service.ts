@@ -1,21 +1,21 @@
-import { hash } from 'bcryptjs'
-import { prisma } from '../prisma'
+import { hash } from 'bcryptjs';
+import { prisma } from '../prisma';
 
 interface Response {
-  statusCode: number
-  body?: any
+  statusCode: number;
+  body?: any;
 }
 
 export class CreateUserService {
   public async execute(request: any): Promise<Response> {
-    const requiredFields = ['name', 'email', 'password']
+    const requiredFields = ['name', 'email', 'password'];
 
     for (const field of requiredFields) {
       if (!request[field]) {
         return {
           statusCode: 400,
           body: `Missing field: ${field}`
-        }
+        };
       }
     }
 
@@ -23,7 +23,7 @@ export class CreateUserService {
       where: {
         email: request.email
       }
-    })
+    });
 
     if (userAlreadyExists) {
       return {
@@ -31,10 +31,10 @@ export class CreateUserService {
         body: {
           message: 'User already exists'
         }
-      }
+      };
     }
 
-    const passwordHash = await hash(request.password, 8)
+    const passwordHash = await hash(request.password, 8);
     const user = await prisma.user.create({
       data: {
         name: request.name,
@@ -48,13 +48,13 @@ export class CreateUserService {
         createdAt: true,
         updatedAt: true
       }
-    })
+    });
 
     return {
       statusCode: 201,
       body: {
         user
       }
-    }
+    };
   }
 }

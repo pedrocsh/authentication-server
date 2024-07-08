@@ -1,18 +1,18 @@
-import { compare } from 'bcryptjs'
-import { sign } from 'jsonwebtoken'
-import { auth } from '../config/auth'
-import { prisma } from '../prisma'
+import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import { auth } from '../config/auth';
+import { prisma } from '../prisma';
 
-const { secret, expiresIn } = auth
+const { secret, expiresIn } = auth;
 
 interface Response {
-  statusCode: number
-  body?: any
+  statusCode: number;
+  body?: any;
 }
 
 export class CreateSessionService {
   public async execute(request: any): Promise<Response> {
-    const requiredFields = ['email', 'password']
+    const requiredFields = ['email', 'password'];
 
     for (const field of requiredFields) {
       if (!request[field]) {
@@ -21,7 +21,7 @@ export class CreateSessionService {
           body: {
             message: `Missing field: ${field}`
           }
-        }
+        };
       }
     }
 
@@ -29,7 +29,7 @@ export class CreateSessionService {
       where: {
         email: request.email
       }
-    })
+    });
 
     if (!user) {
       return {
@@ -37,10 +37,10 @@ export class CreateSessionService {
         body: {
           message: 'User does not exists'
         }
-      }
+      };
     }
 
-    const passwordMatch = await compare(request.password, user.password)
+    const passwordMatch = await compare(request.password, user.password);
 
     if (!passwordMatch) {
       return {
@@ -48,12 +48,12 @@ export class CreateSessionService {
         body: {
           message: 'User/password does not match'
         }
-      }
+      };
     }
 
     const token = sign({}, secret, {
       expiresIn
-    })
+    });
 
     return {
       statusCode: 201,
@@ -67,6 +67,6 @@ export class CreateSessionService {
           updatedAt: user.updatedAt
         }
       }
-    }
+    };
   }
 }
