@@ -51,9 +51,15 @@ export class CreateSessionService {
       };
     }
 
-    const token = sign({}, secret, {
-      expiresIn
-    });
+    const token = sign(
+      {
+        id: user.id
+      },
+      secret,
+      {
+        expiresIn
+      }
+    );
 
     return {
       statusCode: 201,
