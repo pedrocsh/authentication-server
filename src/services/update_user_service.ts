@@ -1,3 +1,4 @@
+import { compare, hash } from 'bcryptjs';
 import { prisma } from '../prisma';
 
 interface Request {
@@ -49,13 +50,41 @@ export class UpdateUserService {
       user.email = request.body.email;
     }
 
+    if (request.body.password) {
+      if (!request.body.oldPassword) {
+        return {
+          statusCode: 400,
+          body: {
+            message: 'Missing param: oldPassword'
+          }
+        };
+      }
+
+      const { password, oldPassword } = request.body;
+      const passwordMatch = await compare(oldPassword, user.password);
+
+      if (!passwordMatch) {
+        return {
+          statusCode: 400,
+          body: {
+            message: 'Password does not match'
+          }
+        };
+      }
+
+      const passwordHash = await hash(password, 8);
+
+      user.password = passwordHash;
+    }
+
     const userUpdated = await prisma.user.update({
       where: {
         id: request.body.id
       },
       data: {
         name: user.name,
-        email: user.email
+        email: user.email,
+        password: user.password
       }
     });
 
