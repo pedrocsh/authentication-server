@@ -1,10 +1,6 @@
 import { hash } from 'bcryptjs';
 import { prisma } from '../prisma';
-
-interface Response {
-  statusCode: number;
-  body?: any;
-}
+import { Response } from '../protocols/http';
 
 export class CreateUserService {
   public async execute(request: any): Promise<Response> {

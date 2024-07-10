@@ -2,13 +2,9 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { auth } from '../config/auth';
 import { prisma } from '../prisma';
+import { Response } from '../protocols/http';
 
 const { secret, expiresIn } = auth;
-
-interface Response {
-  statusCode: number;
-  body?: any;
-}
 
 export class CreateSessionService {
   public async execute(request: any): Promise<Response> {

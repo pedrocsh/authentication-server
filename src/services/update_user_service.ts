@@ -1,17 +1,9 @@
 import { compare, hash } from 'bcryptjs';
 import { prisma } from '../prisma';
-
-interface Request {
-  body?: any;
-}
-
-interface Response {
-  statusCode: number;
-  body?: any;
-}
+import { Response } from '../protocols/http';
 
 export class UpdateUserService {
-  public async execute(request: Request): Promise<Response> {
+  public async execute(request: any): Promise<Response> {
     const user = await prisma.user.findFirst({
       where: {
         id: request.body.id

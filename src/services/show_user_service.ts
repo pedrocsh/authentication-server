@@ -1,9 +1,5 @@
 import { prisma } from '../prisma';
-
-interface Response {
-  statusCode: number;
-  body?: any;
-}
+import { Response } from '../protocols/http';
 
 export class ShowUserService {
   public async execute(id: string): Promise<Response> {
