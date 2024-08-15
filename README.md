@@ -37,7 +37,7 @@ git clone https://github.com/pedrocsh/authentication-server
 cd authentication-server
 
 # Instale as dependências
-npm install
+yarn install
 ```
 
 ## Uso
@@ -46,8 +46,16 @@ npm install
 # Crie um arquivo .env na raiz do projeto e preencha as variáveis
 cp .env.example .env
 
+# Faça o build
+yarn build
+
+# Atualize as informações do banco de dados
+yarn prisma migrate dev
+
 # rode o projeto
-npm run dev
+yarn dev # em modo de desenvolvimento
+# ou
+yarn start # em modo de produção
 ```
 
 ## Contribuição

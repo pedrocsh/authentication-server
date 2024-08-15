@@ -24,6 +24,8 @@
     "typescript": "^5.5.3"
   },
   "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc",
     "dev": "ts-node-dev --transpile-only --exit-child --ignore-watch node_modules src/server.ts",
     "lint": "prettier src --write",
     "prepare": "husky"
